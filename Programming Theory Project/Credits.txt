@@ -3,3 +3,8 @@ Title Screen main Font:
 	xero harrison
 	http://fontvir.us/
 
+Placeholder images:
+Guitar: http://clipart-library.com/clip-art/transparent-guitar-png-12.htm
+Bass: https://www.clipartkey.com/view/boimb_clip-art-bass-guitar-acoustic-music-guitar/
+
+

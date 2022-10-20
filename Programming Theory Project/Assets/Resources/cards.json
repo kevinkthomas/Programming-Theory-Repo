@@ -1,0 +1,151 @@
+{
+	"MusicianCards" : [
+		{
+			"CardName" : "Kev",
+			"CardDescription" : "Bassist with Six Ton Dog",
+			"Category1Value" : 80,
+			"Category2Value" : 50,
+			"Category3Value" : 90,
+			"Category4Value" : 30
+		},
+		{
+			"CardName" : "Nicky",
+			"CardDescription" : "Drummer with Six Ton Dog",
+			"Category1Value" : 30,
+			"Category2Value" : 90,
+			"Category3Value" : 50,
+			"Category4Value" : 80
+		},
+		{
+			"CardName" : "Dave",
+			"CardDescription" : "Guitarist with Six Ton Dog",
+			"Category1Value" : 90,
+			"Category2Value" : 80,
+			"Category3Value" : 50,
+			"Category4Value" : 30
+		},
+		{
+			"CardName" : "Kevin",
+			"CardDescription" : "Middle aged IT professional",
+			"Category1Value" : 10,
+			"Category2Value" : 60,
+			"Category3Value" : 70,
+			"Category4Value" : 40
+		},
+		{
+			"CardName" : "Cefn",
+			"CardDescription" : "D.J. Master Mixer",
+			"Category1Value" : 40,
+			"Category2Value" : 70,
+			"Category3Value" : 60,
+			"Category4Value" : 10
+		},
+		{
+			"CardName" : "Nicola",
+			"CardDescription" : "Punk Rocker",
+			"Category1Value" : 10,
+			"Category2Value" : 40,
+			"Category3Value" : 60,
+			"Category4Value" : 70
+		},
+		{
+			"CardName" : "Nikki",
+			"CardDescription" : "Diva",
+			"Category1Value" : 20,
+			"Category2Value" : 40,
+			"Category3Value" : 60,
+			"Category4Value" : 80
+		},
+		{
+			"CardName" : "David",
+			"CardDescription" : "70s Rocker",
+			"Category1Value" : 80,
+			"Category2Value" : 60,
+			"Category3Value" : 40,
+			"Category4Value" : 20
+		},
+		{
+			"CardName" : "Dafydd",
+			"CardDescription" : "Metal Head",
+			"Category1Value" : 60,
+			"Category2Value" : 40,
+			"Category3Value" : 20,
+			"Category4Value" : 80
+		}
+
+	],
+	"InstrumentCards" : [
+		{
+			"CardName" : "Drum Kit",
+			"CardDescription" : "Bashy Bashy",
+			"Category1Value" : 10,
+			"Category2Value" : 20,
+			"Category3Value" : 80,
+			"Category4Value" : 90
+		},
+		{
+			"CardName" : "Cow Bell",
+			"CardDescription" : "Improves any song",
+			"Category1Value" : 30,
+			"Category2Value" : 40,
+			"Category3Value" : 60,
+			"Category4Value" : 70
+		},
+		{
+			"CardName" : "Bongos",
+			"CardDescription" : "Syncopated Beats",
+			"Category1Value" : 50,
+			"Category2Value" : 50,
+			"Category3Value" : 50,
+			"Category4Value" : 50
+		},
+		{
+			"CardName" : "Guitar",
+			"CardDescription" : "Thrash",
+			"Category1Value" : 10,
+			"Category2Value" : 30,
+			"Category3Value" : 50,
+			"Category4Value" : 80
+		},
+		{
+			"CardName" : "Ukulele",
+			"CardDescription" : "From Hawaii to Formby",
+			"Category1Value" : 90,
+			"Category2Value" : 70,
+			"Category3Value" : 50,
+			"Category4Value" : 30
+		},
+		{
+			"CardName" : "Banjo",
+			"CardDescription" : "Deep South vibes",
+			"Category1Value" : 10,
+			"Category2Value" : 20,
+			"Category3Value" : 30,
+			"Category4Value" : 40
+		},
+		{
+			"CardName" : "Bass",
+			"CardDescription" : "Dum dum Dum",
+			"Category1Value" : 50,
+			"Category2Value" : 60,
+			"Category3Value" : 70,
+			"Category4Value" : 80
+		},
+		{
+			"CardName" : "Synth",
+			"CardDescription" : "Electro pop",
+			"Category1Value" : 80,
+			"Category2Value" : 50,
+			"Category3Value" : 90,
+			"Category4Value" : 30
+		},
+		{
+			"CardName" : "Microphone",
+			"CardDescription" : "La La La",
+			"Category1Value" : 20,
+			"Category2Value" : 40,
+			"Category3Value" : 60,
+			"Category4Value" : 70
+		}
+	]
+}

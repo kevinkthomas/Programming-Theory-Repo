@@ -9,18 +9,6 @@ using UnityEditor;
 [DefaultExecutionOrder(1000)]
 public class MainMenuUI : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     public void NewGame()
     {
         GameManager.Instance.ResetGame();
