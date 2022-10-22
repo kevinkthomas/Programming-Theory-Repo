@@ -6,26 +6,28 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager Instance { get; private set; }
-
     private static readonly int INITIAL_CARD_COUNT = 6;
 
+    public static GameManager Instance { get; private set; }
     public CardLists Cards { get; private set; }
-
     public string BandName { get; set; }
-    public List<OwnedCardEntry> OwnedMusicanCards = new List<OwnedCardEntry>();
-    public List<OwnedCardEntry> OwnedInstrumentCards = new List<OwnedCardEntry>();
+    public List<OwnedCardEntry> OwnedMusicanCards { get; private set; }
+    public List<OwnedCardEntry> OwnedInstrumentCards { get; private set; }
+    public bool HasSaveGame { get; private set; }
 
     // Start is called before the first frame update
     private void Awake()
     {
+        OwnedMusicanCards = new List<OwnedCardEntry>();
+        OwnedInstrumentCards = new List<OwnedCardEntry>();
+
         if (Instance == null)
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
 
             LoadCards();
-            LoadGame();
+            HasSaveGame = LoadGame();
         }
     }
 
@@ -33,10 +35,19 @@ public class GameManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            SceneManager.LoadScene(0);
+            ReturnToPreviousScene();
         }
     }
 
+    public void ReturnToPreviousScene()
+    {
+        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+
+        if (currentSceneIndex > 0)
+        {
+            SceneManager.LoadScene(currentSceneIndex-1);
+        }
+    }
 
     public void LoadCards()
     {
@@ -70,8 +81,29 @@ public class GameManager : MonoBehaviour
         InitialiseListWitheRandomCards(OwnedInstrumentCards, Cards.InstrumentCards);
     }
 
-    public void LoadGame()
+    public void SetCardsInPlay(List<string> musicianCardsInPlay, List<string> instrumentCardsInPlay)
     {
+        foreach(OwnedCardEntry ownedCardEntry in OwnedInstrumentCards)
+        {
+            int inPlayIndex = instrumentCardsInPlay.FindIndex(x => x == ownedCardEntry.CardName);
+            ownedCardEntry.InPlayPairIndex = inPlayIndex + 1;
+            ownedCardEntry.IsInPlay = inPlayIndex >= 0;
+        }
+
+        foreach (OwnedCardEntry ownedCardEntry in OwnedMusicanCards)
+        {
+            int inPlayIndex = musicianCardsInPlay.FindIndex(x => x == ownedCardEntry.CardName);
+            ownedCardEntry.InPlayPairIndex = inPlayIndex + 1;
+            ownedCardEntry.IsInPlay = inPlayIndex >= 0;
+        }
+
+        SaveGame();
+    }
+
+    public bool LoadGame()
+    {
+        bool hasSaveGame = false;
+
         string path = Application.persistentDataPath + "/savefile.json";
         if (File.Exists(path))
         {
@@ -81,7 +113,11 @@ public class GameManager : MonoBehaviour
             BandName = data.BandName;
             OwnedInstrumentCards = data.OwnedInstrumentCards;
             OwnedMusicanCards = data.OwnedMusicanCards;
+
+            hasSaveGame = true;
         }
+
+        return hasSaveGame;
     }
 
     public void SaveGame()
@@ -118,6 +154,7 @@ public class GameManager : MonoBehaviour
     {
         public string CardName;
         public bool IsInPlay;
+        public int InPlayPairIndex = 0;
         public int Experience;
     }
 

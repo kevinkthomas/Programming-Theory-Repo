@@ -9,31 +9,47 @@ public class DeckBuilderManager : MonoBehaviour
     [SerializeField] MusicianCard musicianCardPrefab;
     [SerializeField] InstrumentCard instrumentCardPrefab;
 
-    GameObject hand; 
+    GameObject hand;
+    CardPair[] cardpairs;
+
+    List<string> instrumentCardsInPlay = new List<string>();
+    List<string> musicianCardsInPlay = new List<string>();
 
     // Start is called before the first frame update
     void Start()
     {
         hand = GameObject.Find("Hand");
+        cardpairs = GetComponentsInChildren<CardPair>();
 
         GameManager.CardLists cards = GameManager.Instance.Cards;
         List<GameManager.OwnedCardEntry> ownedInstrumentCards = GameManager.Instance.OwnedInstrumentCards;
+        List<GameManager.OwnedCardEntry> ownedMuicianCards = GameManager.Instance.OwnedMusicanCards;
 
-        AddCardsToHandPanel(ownedInstrumentCards, cards.InstrumentCards, instrumentCardPrefab);
-        AddCardsToHandPanel(GameManager.Instance.OwnedMusicanCards, cards.MusicianCards, musicianCardPrefab);
+        AddCardsToHandPanels(ownedInstrumentCards, cards.InstrumentCards, instrumentCardPrefab);
+        AddCardsToHandPanels(ownedMuicianCards, cards.MusicianCards, musicianCardPrefab);
 
-        ShowInfoPanel();
+        ShowInfoPanel(!CheckCardsInPlay());
     }
 
-    void AddCardsToHandPanel (List<GameManager.OwnedCardEntry> ownedCardList, List<GameManager.CardEntry> cardList, Card prefab)
+    void AddCardsToHandPanels (List<GameManager.OwnedCardEntry> ownedCardList, List<GameManager.CardEntry> cardList, Card prefab)
     {
-        foreach (GameManager.OwnedCardEntry ownedInstrumentCard in ownedCardList)
+        foreach (GameManager.OwnedCardEntry ownedCard in ownedCardList)
         {
-            GameManager.CardEntry cardEntry = cardList.Find(x => x.CardName == ownedInstrumentCard.CardName);
-            Card card = (Card)Instantiate<Card>(prefab, new Vector3(100, 100, 100), Quaternion.identity, hand.transform);
+            GameManager.CardEntry cardEntry = cardList.Find(x => x.CardName == ownedCard.CardName);
+
+            GameObject parent = hand;
+
+            if (ownedCard.IsInPlay)
+            {
+                parent = cardpairs[ownedCard.InPlayPairIndex - 1].gameObject;
+            }
+
+            Card card = (Card)Instantiate<Card>(prefab, new Vector3(100, 100, 100), Quaternion.identity, parent.transform);
 
             card.Name = cardEntry.CardName;
             card.Description = cardEntry.CardDescription;
+
+            // TODO : Set Image to correct image once images have been created and added to resources
             card.SetImage("Guitar");
 
             card.CategoryValue1 = cardEntry.Category1Value;
@@ -56,24 +72,60 @@ public class DeckBuilderManager : MonoBehaviour
         SceneManager.LoadScene(0);
     }
 
-    public void GoToGameScene()
+    protected bool CheckCardsInPlay()
     {
-        CardPair[] cardpairs = GetComponentsInChildren<CardPair>();
+        instrumentCardsInPlay.Clear();
+        musicianCardsInPlay.Clear();
 
-        foreach(CardPair cardPair in cardpairs)
+        foreach (CardPair cardPair in cardpairs)
         {
-            if (cardPair.GetComponentsInChildren<Card>().Length < 2)
+            Card[] cardsInPair = cardPair.GetComponentsInChildren<Card>();
+            if (cardsInPair.Length < 2)
             {
-                ShowInfoPanel();
-                return;
+                return false;
+            }
+
+            foreach (Card card in cardsInPair)
+            {
+                if (card is MusicianCard)
+                    musicianCardsInPlay.Add(card.Name);
+                else if (card is InstrumentCard)
+                    instrumentCardsInPlay.Add(card.Name);
             }
         }
 
+        return true;
+    }
+
+    public void OnPlayButtonPressed()
+    {
+        if (CheckCardsInPlay())
+        {
+            GameManager.Instance.SetCardsInPlay(musicianCardsInPlay, instrumentCardsInPlay);
+            GoToGameScene();
+        }
+        else
+        {
+            ShowInfoPanel(false);
+        }
+    }
+    public void OnMenuButtonPressed()
+    {
+        if (CheckCardsInPlay())
+        {
+            GameManager.Instance.SetCardsInPlay(musicianCardsInPlay, instrumentCardsInPlay);
+        }
+
+        GoToMenuScene();
+    }
+
+    public void GoToGameScene()
+    {
         SceneManager.LoadScene(2);
     }
 
-    void ShowInfoPanel()
+    void ShowInfoPanel(bool show)
     {
-        gameObject.transform.Find("InfoPanel").gameObject.SetActive(true);
+        gameObject.transform.Find("InfoPanel").gameObject.SetActive(show);
     }
 }

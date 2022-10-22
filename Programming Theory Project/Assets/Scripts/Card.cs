@@ -76,7 +76,6 @@ public class Card : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHand
 
     public virtual string[] GetCatagoryText()
     {
-        Debug.Log("GetCatagoryText in Card");
         return new string[0];
     }
 

@@ -9,6 +9,11 @@ using UnityEditor;
 [DefaultExecutionOrder(1000)]
 public class MainMenuUI : MonoBehaviour
 {
+    private void Awake()
+    {
+        GameObject.Find("Continue Button").SetActive(GameManager.Instance.HasSaveGame);
+    }
+
     public void NewGame()
     {
         GameManager.Instance.ResetGame();

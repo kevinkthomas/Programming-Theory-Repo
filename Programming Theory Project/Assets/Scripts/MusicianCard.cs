@@ -13,7 +13,6 @@ public class MusicianCard : Card
 
     public override string[] GetCatagoryText()
     {
-        Debug.Log("GetCatagoryText in Musician Card");
         return categories;
     }
 }
