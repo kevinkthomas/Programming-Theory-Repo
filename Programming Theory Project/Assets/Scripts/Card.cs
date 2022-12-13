@@ -7,6 +7,7 @@ using TMPro;
 
 public class Card : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler
 {
+    // ENCAPSULATION
     public string Name { get; set; }
     public string Description { get; set; }
     protected int m_CategoryValue1;
@@ -62,6 +63,7 @@ public class Card : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHand
 
     private void Start()
     {
+        // ABSTRACTION
         InitialiseCard();
     }
 
@@ -123,11 +125,29 @@ public class Card : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHand
         valueTexts[textIndex].gameObject.SetActive(true);
     }
 
+    // POLYMORPHISM
     public int GetCategoryValue(int categoryIndex)
     {
         int value = 0;
 
         if (valueTexts.Count >= categoryIndex)
+        {
+            int.TryParse(valueTexts[categoryIndex].text, out value);
+        }
+
+        return value;
+    }
+
+    // POLYMORPHISM
+    public int GetCategoryValue(string categoryName)
+    {
+        int value = 0;
+
+        List<string> catagories = new List<string>(GetCatagoryText());
+
+        int categoryIndex = catagories.IndexOf(categoryName);
+
+        if (categoryIndex >= 0)
         {
             int.TryParse(valueTexts[categoryIndex].text, out value);
         }

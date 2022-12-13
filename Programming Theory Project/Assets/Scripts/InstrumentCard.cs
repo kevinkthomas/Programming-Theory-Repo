@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// INHERITANCE
 public class InstrumentCard : Card
 {
     private static readonly string[] categories = { "Range", "Loudness", "Exotic", "Skill Required" };
@@ -11,6 +12,7 @@ public class InstrumentCard : Card
         base.SetImage("Instruments\\" + imageName);
     }
 
+    // INHERITANCE
     public override string[] GetCatagoryText()
     {
         return categories;

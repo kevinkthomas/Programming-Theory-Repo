@@ -17,6 +17,7 @@ public class GameManager : MonoBehaviour
 
     private static readonly int INITIAL_CARD_COUNT = 6;
 
+    // ENCAPSULATION
     public static GameManager Instance { get; private set; }
     public CardLists Cards { get; private set; }
     public string BandName { get; set; }
@@ -48,6 +49,7 @@ public class GameManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
+            // ABSTRACTION
             ReturnToPreviousScene();
         }
     }
@@ -108,12 +110,14 @@ public class GameManager : MonoBehaviour
         List<CardEntry> availableMusicianCards = GetUnownedCards(Cards.MusicianCards, OwnedMusicanCards);
         List<CardEntry> availableInstrumentCards = GetUnownedCards(Cards.InstrumentCards, OwnedInstrumentCards);
 
+        // ABSTRACTION
         InitialiseListWitheRandomCards(musicianList, availableMusicianCards, 3);
         InitialiseListWitheRandomCards(instrumentList, availableInstrumentCards, 3);
     }
 
     public void ResetGame()
     {
+        // ABSTRACTION
         InitialiseListWitheRandomCards(OwnedMusicanCards, Cards.MusicianCards, INITIAL_CARD_COUNT);
         InitialiseListWitheRandomCards(OwnedInstrumentCards, Cards.InstrumentCards, INITIAL_CARD_COUNT);
     }
@@ -147,6 +151,7 @@ public class GameManager : MonoBehaviour
             }
         }
 
+        // ABSTRACTION
         SaveGame();
     }
 

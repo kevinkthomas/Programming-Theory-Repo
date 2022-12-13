@@ -47,6 +47,7 @@ public class Battle : MonoBehaviour
         battleTexts.Add(transform.Find("VersesText2").GetComponentInChildren<TMP_Text>());
         battleTexts.Add(transform.Find("VersesText3").GetComponentInChildren<TMP_Text>());
 
+        // ABSTRACTION
         AddCardsToPlayerPanels();
         AddCardsToSupportPanels();
 
@@ -97,16 +98,19 @@ public class Battle : MonoBehaviour
             results.Add(Result.DRAW);
         }
 
+        // ABSTRACTION
         EndBattle(battleIndex);
 
         battleIndex++;
 
         if (battleIndex < playerCardPanels.Count)
         {
+            // ABSTRACTION
             InitBattle(battleIndex);
         }
         else
         {
+            // ABSTRACTION
             BattlesComplete();
         }
     }
@@ -135,6 +139,7 @@ public class Battle : MonoBehaviour
             GameManager.OwnedCardEntry musicianCardEntry = ownedMuicianCards[pairIndex];
             GameManager.OwnedCardEntry instumentCardEntry = ownedInstrumentCards[pairIndex];
 
+            // ABSTRACTION
             AddCardsToPanel(cardPanel, musicianCardEntry, instumentCardEntry, false);
         }
     }
@@ -148,6 +153,7 @@ public class Battle : MonoBehaviour
             GameManager.OwnedCardEntry musicianCardEntry = supportActMusicianCards[pairIndex];
             GameManager.OwnedCardEntry instumentCardEntry = supportActInstrumentCards[pairIndex];
 
+            // ABSTRACTION
             AddCardsToPanel(cardPanel, musicianCardEntry, instumentCardEntry, true);
         }
     }
@@ -209,6 +215,7 @@ public class Battle : MonoBehaviour
 
         battleTexts[battleIndex].text = supportMusicianCardInPlay.Name + " v " + playerMusicianCardInPlay.Name;
 
+        // ABSTRACTION
         AddClickListenersToCard(playerMusicianCardInPlay, battleIndex);
         AddClickListenersToCard(playerInstrumentCardInPlay, battleIndex);
     }
@@ -233,6 +240,7 @@ public class Battle : MonoBehaviour
 
         playerPanel.transform.position = pos;
 
+        // ABSTRACTION
         RemoveClickListenersFromCard(playerMusicianCardInPlay);
         RemoveClickListenersFromCard(playerInstrumentCardInPlay);
     }

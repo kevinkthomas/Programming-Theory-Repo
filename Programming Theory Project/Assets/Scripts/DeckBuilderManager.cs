@@ -18,6 +18,7 @@ public class DeckBuilderManager : MonoBehaviour
         hand = GameObject.Find("Hand");
         cardpairs = GetComponentsInChildren<CardPair>();
 
+        // ABSTRACTION
         AddCardsToHandPanels();
 
         ShowInfoPanel(!CheckCardsInPlay());
@@ -29,6 +30,7 @@ public class DeckBuilderManager : MonoBehaviour
         List<GameManager.OwnedCardEntry> ownedInstrumentCards = GameManager.Instance.OwnedInstrumentCards;
         List<GameManager.OwnedCardEntry> ownedMusicanCards = GameManager.Instance.OwnedMusicanCards;
 
+        // ABSTRACTION
         AddCardsFromListToPanels(ownedMusicanCards, cards.MusicianCards, true);
         AddCardsFromListToPanels(ownedInstrumentCards, cards.InstrumentCards, false);
     }
@@ -70,6 +72,7 @@ public class DeckBuilderManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
+            // ABSTRACTION
             GoToMenuScene();
         }
     }
@@ -106,9 +109,11 @@ public class DeckBuilderManager : MonoBehaviour
 
     public void OnPlayButtonPressed()
     {
+        // ABSTRACTION
         if (CheckCardsInPlay())
         {
             GameManager.Instance.SetCardsInPlay(musicianCardsInPlay, instrumentCardsInPlay);
+            // ABSTRACTION
             GoToGameScene();
         }
         else
@@ -123,6 +128,7 @@ public class DeckBuilderManager : MonoBehaviour
             GameManager.Instance.SetCardsInPlay(musicianCardsInPlay, instrumentCardsInPlay);
         }
 
+        // ABSTRACTION
         GoToMenuScene();
     }
 
