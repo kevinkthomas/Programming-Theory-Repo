@@ -5,26 +5,31 @@ using UnityEngine;
 
 public class CardPair : DropHandler
 {
+    [SerializeField] bool allowDrop;
+
     public override void OnDropAction(Card card)
     {
-        Transform handTransform = GameObject.FindObjectOfType<Deck>().transform;
-
-        if (card is MusicianCard)
+        if (allowDrop)
         {
-            MusicianCard otherMusicianCard = GetComponentInChildren<MusicianCard>();
+            Transform handTransform = GameObject.FindObjectOfType<Deck>().transform;
 
-            if (otherMusicianCard != null)
+            if (card is MusicianCard)
             {
-                otherMusicianCard.gameObject.transform.SetParent(handTransform);
+                MusicianCard otherMusicianCard = GetComponentInChildren<MusicianCard>();
+
+                if (otherMusicianCard != null)
+                {
+                    otherMusicianCard.gameObject.transform.SetParent(handTransform);
+                }
             }
-        }
-        else if (card is InstrumentCard)
-        {
-            InstrumentCard otherInstrumentCard = GetComponentInChildren<InstrumentCard>();
-
-            if (otherInstrumentCard != null)
+            else if (card is InstrumentCard)
             {
-                otherInstrumentCard.gameObject.transform.SetParent(handTransform);
+                InstrumentCard otherInstrumentCard = GetComponentInChildren<InstrumentCard>();
+
+                if (otherInstrumentCard != null)
+                {
+                    otherInstrumentCard.gameObject.transform.SetParent(handTransform);
+                }
             }
         }
     }

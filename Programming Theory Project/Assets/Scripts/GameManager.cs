@@ -6,6 +6,15 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    public enum CARD_TYPE
+    {
+        MUSICIAN_CARD,
+        INSTRUMENT_CARD
+    }
+
+    [SerializeField] MusicianCard musicianCardPrefab;
+    [SerializeField] InstrumentCard instrumentCardPrefab;
+
     private static readonly int INITIAL_CARD_COUNT = 6;
 
     public static GameManager Instance { get; private set; }
@@ -14,12 +23,16 @@ public class GameManager : MonoBehaviour
     public List<OwnedCardEntry> OwnedMusicanCards { get; private set; }
     public List<OwnedCardEntry> OwnedInstrumentCards { get; private set; }
     public bool HasSaveGame { get; private set; }
+    public Dictionary<int,OwnedCardEntry> MusicanCardsInPlay { get; private set; }
+    public Dictionary<int, OwnedCardEntry> InstrumentCardsInPlay { get; private set; }
 
     // Start is called before the first frame update
     private void Awake()
     {
         OwnedMusicanCards = new List<OwnedCardEntry>();
         OwnedInstrumentCards = new List<OwnedCardEntry>();
+        MusicanCardsInPlay = new Dictionary<int, OwnedCardEntry>();
+        InstrumentCardsInPlay = new Dictionary<int, OwnedCardEntry>();
 
         if (Instance == null)
         {
@@ -56,38 +69,70 @@ public class GameManager : MonoBehaviour
         Cards = JsonUtility.FromJson<CardLists>(cardFiles.text);
     }
 
-    private void InitialiseListWitheRandomCards(List<OwnedCardEntry> ownedList, List<CardEntry> sourceList)
+    private void InitialiseListWitheRandomCards(List<OwnedCardEntry> targetList, List<CardEntry> sourceList, int cardCount)
     {
-        ownedList.Clear();
+        targetList.Clear();
 
-        while (ownedList.Count < INITIAL_CARD_COUNT)
+        while (targetList.Count < cardCount)
         {
             int randomValue = Random.Range(0, sourceList.Count);
 
             string cardName = sourceList[randomValue].CardName;
 
-            if (!ownedList.Exists(x => x.CardName == cardName))
+            if (!targetList.Exists(x => x.CardName == cardName))
             {
                 OwnedCardEntry cardEntry = new OwnedCardEntry();
                 cardEntry.CardName = cardName;
-                ownedList.Add(cardEntry);
+                targetList.Add(cardEntry);
             }
         }
     }
 
+    private List<CardEntry> GetUnownedCards(List<CardEntry> sourceList, List<OwnedCardEntry> ownedList)
+    {
+        List<CardEntry> unownedCards = new List<CardEntry>();
+
+        foreach(CardEntry cardEntry in sourceList)
+        {
+            if (!ownedList.Exists(x => x.CardName == cardEntry.CardName))
+            {
+                unownedCards.Add(cardEntry);
+            }
+        }
+
+        return unownedCards;
+    }
+
+    public void GetSupportActCards(List<OwnedCardEntry> musicianList, List<OwnedCardEntry> instrumentList)
+    {
+        List<CardEntry> availableMusicianCards = GetUnownedCards(Cards.MusicianCards, OwnedMusicanCards);
+        List<CardEntry> availableInstrumentCards = GetUnownedCards(Cards.InstrumentCards, OwnedInstrumentCards);
+
+        InitialiseListWitheRandomCards(musicianList, availableMusicianCards, 3);
+        InitialiseListWitheRandomCards(instrumentList, availableInstrumentCards, 3);
+    }
+
     public void ResetGame()
     {
-        InitialiseListWitheRandomCards(OwnedMusicanCards, Cards.MusicianCards);
-        InitialiseListWitheRandomCards(OwnedInstrumentCards, Cards.InstrumentCards);
+        InitialiseListWitheRandomCards(OwnedMusicanCards, Cards.MusicianCards, INITIAL_CARD_COUNT);
+        InitialiseListWitheRandomCards(OwnedInstrumentCards, Cards.InstrumentCards, INITIAL_CARD_COUNT);
     }
 
     public void SetCardsInPlay(List<string> musicianCardsInPlay, List<string> instrumentCardsInPlay)
     {
-        foreach(OwnedCardEntry ownedCardEntry in OwnedInstrumentCards)
+        InstrumentCardsInPlay.Clear();
+        MusicanCardsInPlay.Clear();
+
+        foreach (OwnedCardEntry ownedCardEntry in OwnedInstrumentCards)
         {
             int inPlayIndex = instrumentCardsInPlay.FindIndex(x => x == ownedCardEntry.CardName);
             ownedCardEntry.InPlayPairIndex = inPlayIndex + 1;
             ownedCardEntry.IsInPlay = inPlayIndex >= 0;
+
+            if (inPlayIndex >= 0)
+            {
+                InstrumentCardsInPlay.Add(inPlayIndex, ownedCardEntry);
+            }
         }
 
         foreach (OwnedCardEntry ownedCardEntry in OwnedMusicanCards)
@@ -95,9 +140,43 @@ public class GameManager : MonoBehaviour
             int inPlayIndex = musicianCardsInPlay.FindIndex(x => x == ownedCardEntry.CardName);
             ownedCardEntry.InPlayPairIndex = inPlayIndex + 1;
             ownedCardEntry.IsInPlay = inPlayIndex >= 0;
+
+            if (inPlayIndex >= 0)
+            {
+                MusicanCardsInPlay.Add(inPlayIndex, ownedCardEntry);
+            }
         }
 
         SaveGame();
+    }
+
+    public Card CreateMusicianCard(string cardName, Transform parent)
+    {
+        CardEntry cardEntry = Cards.MusicianCards.Find(x => x.CardName == cardName);
+        return CreateCardObject(musicianCardPrefab, cardEntry, parent);
+    }
+
+    public Card CreateInstrumentCard(string cardName, Transform parent)
+    {
+        CardEntry cardEntry = Cards.InstrumentCards.Find(x => x.CardName == cardName);
+        return CreateCardObject(instrumentCardPrefab, cardEntry, parent);
+    }
+
+    public Card CreateCardObject(Card prefab, CardEntry cardEntry, Transform parent)
+    {
+        Card card = (Card)Instantiate<Card>(prefab, new Vector3(100, 100, 100), Quaternion.identity, parent.transform);
+
+        card.Name = cardEntry.CardName;
+        card.Description = cardEntry.CardDescription;
+
+        card.SetImage(cardEntry.CardName);
+
+        card.CategoryValue1 = cardEntry.Category1Value;
+        card.CategoryValue2 = cardEntry.Category2Value;
+        card.CategoryValue3 = cardEntry.Category3Value;
+        card.CategoryValue4 = cardEntry.Category4Value;
+
+        return card;
     }
 
     public bool LoadGame()
@@ -105,6 +184,7 @@ public class GameManager : MonoBehaviour
         bool hasSaveGame = false;
 
         string path = Application.persistentDataPath + "/savefile.json";
+
         if (File.Exists(path))
         {
             string json = File.ReadAllText(path);

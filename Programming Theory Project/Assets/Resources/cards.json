@@ -71,6 +71,30 @@
 			"Category2Value" : 40,
 			"Category3Value" : 20,
 			"Category4Value" : 80
+		},
+		{
+			"CardName" : "Anne",
+			"CardDescription" : "Classically Trained",
+			"Category1Value" : 65,
+			"Category2Value" : 35,
+			"Category3Value" : 25,
+			"Category4Value" : 75
+		},
+		{
+			"CardName" : "Annie",
+			"CardDescription" : "Voice of an Angel",
+			"Category1Value" : 55,
+			"Category2Value" : 45,
+			"Category3Value" : 15,
+			"Category4Value" : 85
+		},
+		{
+			"CardName" : "Annabelle",
+			"CardDescription" : "Lives Life",
+			"Category1Value" : 95,
+			"Category2Value" : 35,
+			"Category3Value" : 65,
+			"Category4Value" : 40
 		}
 
 	],
@@ -146,6 +170,30 @@
 			"Category2Value" : 40,
 			"Category3Value" : 60,
 			"Category4Value" : 70
+		},
+		{
+			"CardName" : "Piano",
+			"CardDescription" : "Plink Plonk",
+			"Category1Value" : 25,
+			"Category2Value" : 35,
+			"Category3Value" : 65,
+			"Category4Value" : 65
+		},
+		{
+			"CardName" : "Guiro",
+			"CardDescription" : "Scrapey Thing",
+			"Category1Value" : 15,
+			"Category2Value" : 45,
+			"Category3Value" : 55,
+			"Category4Value" : 75
+		},
+		{
+			"CardName" : "Triangle",
+			"CardDescription" : "Ting Ting",
+			"Category1Value" : 75,
+			"Category2Value" : 65,
+			"Category3Value" : 45,
+			"Category4Value" : 50
 		}
 	]
 }

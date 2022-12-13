@@ -6,9 +6,6 @@ using UnityEngine.SceneManagement;
 
 public class DeckBuilderManager : MonoBehaviour
 {
-    [SerializeField] MusicianCard musicianCardPrefab;
-    [SerializeField] InstrumentCard instrumentCardPrefab;
-
     GameObject hand;
     CardPair[] cardpairs;
 
@@ -21,43 +18,53 @@ public class DeckBuilderManager : MonoBehaviour
         hand = GameObject.Find("Hand");
         cardpairs = GetComponentsInChildren<CardPair>();
 
-        GameManager.CardLists cards = GameManager.Instance.Cards;
-        List<GameManager.OwnedCardEntry> ownedInstrumentCards = GameManager.Instance.OwnedInstrumentCards;
-        List<GameManager.OwnedCardEntry> ownedMuicianCards = GameManager.Instance.OwnedMusicanCards;
-
-        AddCardsToHandPanels(ownedInstrumentCards, cards.InstrumentCards, instrumentCardPrefab);
-        AddCardsToHandPanels(ownedMuicianCards, cards.MusicianCards, musicianCardPrefab);
+        AddCardsToHandPanels();
 
         ShowInfoPanel(!CheckCardsInPlay());
     }
 
-    void AddCardsToHandPanels (List<GameManager.OwnedCardEntry> ownedCardList, List<GameManager.CardEntry> cardList, Card prefab)
+    void AddCardsToHandPanels ()
     {
+        GameManager.CardLists cards = GameManager.Instance.Cards;
+        List<GameManager.OwnedCardEntry> ownedInstrumentCards = GameManager.Instance.OwnedInstrumentCards;
+        List<GameManager.OwnedCardEntry> ownedMusicanCards = GameManager.Instance.OwnedMusicanCards;
+
+        AddCardsFromListToPanels(ownedMusicanCards, cards.MusicianCards, true);
+        AddCardsFromListToPanels(ownedInstrumentCards, cards.InstrumentCards, false);
+    }
+
+    void AddCardsFromListToPanels(List<GameManager.OwnedCardEntry> ownedCardList, List<GameManager.CardEntry> cardEntryList, bool isMusicianCard)
+    {
+        GameObject parent = hand;
+
         foreach (GameManager.OwnedCardEntry ownedCard in ownedCardList)
         {
-            GameManager.CardEntry cardEntry = cardList.Find(x => x.CardName == ownedCard.CardName);
-
-            GameObject parent = hand;
+            GameManager.CardEntry cardEntry = cardEntryList.Find(x => x.CardName == ownedCard.CardName);
 
             if (ownedCard.IsInPlay)
             {
                 parent = cardpairs[ownedCard.InPlayPairIndex - 1].gameObject;
             }
+            else
+            {
+                parent = hand;
+            }
 
-            Card card = (Card)Instantiate<Card>(prefab, new Vector3(100, 100, 100), Quaternion.identity, parent.transform);
+            Card card;
 
-            card.Name = cardEntry.CardName;
-            card.Description = cardEntry.CardDescription;
+            if (isMusicianCard)
+            {
+                card = GameManager.Instance.CreateMusicianCard(ownedCard.CardName, parent.transform);
+            }
+            else
+            {
+                card = GameManager.Instance.CreateInstrumentCard(ownedCard.CardName, parent.transform);
+            }
 
-            // TODO : Set Image to correct image once images have been created and added to resources
-            card.SetImage("Guitar");
-
-            card.CategoryValue1 = cardEntry.Category1Value;
-            card.CategoryValue2 = cardEntry.Category2Value;
-            card.CategoryValue3 = cardEntry.Category3Value;
-            card.CategoryValue4 = cardEntry.Category4Value;
+            card.IsDraggable = true;
         }
     }
+
 
     private void Update()
     {

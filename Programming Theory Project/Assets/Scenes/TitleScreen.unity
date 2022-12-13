@@ -675,6 +675,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 766355347851c994d92c07b58f9de2ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  musicianCardPrefab: {fileID: -4922095504943653803, guid: 8c068ee33a6707140855958375cc4170, type: 3}
+  instrumentCardPrefab: {fileID: -7320411438929250579, guid: ab4b9041310a8834bad0721755b3f171, type: 3}
 --- !u!4 &1020832788
 Transform:
   m_ObjectHideFlags: 0
@@ -748,7 +750,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: new game
+  m_text: new band
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: c0ae4afbab7b2dc458418df292856fb5, type: 2}
   m_sharedMaterial: {fileID: -6037773779973500921, guid: c0ae4afbab7b2dc458418df292856fb5, type: 2}

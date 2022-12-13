@@ -7,4 +7,19 @@ Placeholder images:
 Guitar: http://clipart-library.com/clip-art/transparent-guitar-png-12.htm
 Bass: https://www.clipartkey.com/view/boimb_clip-art-bass-guitar-acoustic-music-guitar/
 
+<a href="https://www.flaticon.com/free-icons/drums" title="drums icons">Drums icons created by Freepik - Flaticon</a>
+<a href="https://www.flaticon.com/free-icons/guiro" title="guiro icons">Guiro icons created by Good Ware - Flaticon</a>
+<a href="https://www.flaticon.com/free-icons/piano" title="piano icons">Piano icons created by Freepik - Flaticon</a>
+<a href="https://www.flaticon.com/free-icons/synthesizer" title="synthesizer icons">Synthesizer icons created by Freepik - Flaticon</a>
+<a href="https://www.flaticon.com/free-icons/guitar" title="guitar icons">Guitar icons created by Freepik - Flaticon</a>
+<a href="https://www.flaticon.com/free-icons/guitar" title="guitar icons">Guitar icons created by Freepik - Flaticon</a>
+<a href="https://www.flaticon.com/free-icons/banjo" title="banjo icons">Banjo icons created by Freepik - Flaticon</a>
+<a href="https://www.flaticon.com/free-icons/ukulele" title="ukulele icons">Ukulele icons created by Freepik - Flaticon</a>
+<a href="https://www.flaticon.com/free-icons/bongo" title="bongo icons">Bongo icons created by Freepik - Flaticon</a>
+<a href="https://www.flaticon.com/free-icons/cow-bell" title="cow bell icons">Cow bell icons created by Freepik - Flaticon</a>
+<a href="https://www.flaticon.com/free-icons/microphone" title="microphone icons">Microphone icons created by Freepik - Flaticon</a>
+<a href="https://www.flaticon.com/free-icons/triangle" title="triangle icons">Triangle icons created by Freepik - Flaticon</a>
+<a href="https://www.flaticon.com/free-icons/guiro" title="guiro icons">Guiro icons created by Freepik - Flaticon</a>
+<a href="https://www.flaticon.com/free-icons/bass-guitar" title="bass-guitar icons">Bass-guitar icons created by Freepik - Flaticon</a>
+
 

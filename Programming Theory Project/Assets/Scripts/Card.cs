@@ -7,42 +7,57 @@ using TMPro;
 
 public class Card : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler
 {
-
     public string Name { get; set; }
     public string Description { get; set; }
-    public int CategoryValue1 { get; set; }
-    public int CategoryValue2 { get; set; }
-    public int CategoryValue3 { get; set; }
-    public int CategoryValue4 { get; set; }
+    protected int m_CategoryValue1;
+    public int CategoryValue1
+    {
+        get { return m_CategoryValue1; }
+        set { m_CategoryValue1 = Mathf.Max(0, value); }
+    }
+    protected int m_CategoryValue2;
+    public int CategoryValue2
+    {
+        get { return m_CategoryValue2; }
+        set { m_CategoryValue2 = Mathf.Max(0, value); }
+    }
+    protected int m_CategoryValue3;
+    public int CategoryValue3
+    {
+        get { return m_CategoryValue3; }
+        set { m_CategoryValue3 = Mathf.Max(0, value); }
+    }
+    protected int m_CategoryValue4;
+    public int CategoryValue4
+    {
+        get { return m_CategoryValue4; }
+        set { m_CategoryValue4 = Mathf.Max(0, value); }
+    }
     public Transform DropParent { get; set; }
+    public bool IsDraggable { get; set; }
 
     private Sprite cardImageSprite = null;
     private Vector2 dragoffset = new Vector2();
     private TMP_Text nameText;
     private TMP_Text descriptionText;
     private Image cardImage;
-    private TMP_Text category1Text;
-    private TMP_Text category2Text;
-    private TMP_Text category3Text;
-    private TMP_Text category4Text;
-    private TMP_Text value1Text;
-    private TMP_Text value2Text;
-    private TMP_Text value3Text;
-    private TMP_Text value4Text;
+    private Dictionary<int,TMP_Text> valueTexts = new Dictionary<int, TMP_Text>();
+    private Dictionary<int, TMP_Text> categoryTexts = new Dictionary<int, TMP_Text>();
 
     private void Awake()
     {
         nameText = transform.Find("CardNameText").GetComponentInChildren<TMP_Text>();
         descriptionText = transform.Find("CardDescriptionText").GetComponentInChildren<TMP_Text>();
         cardImage = transform.Find("CardImage").GetComponentInChildren<Image>();
-        category1Text = transform.Find("Category1").GetComponentInChildren<TMP_Text>();
-        category2Text = transform.Find("Category2").GetComponentInChildren<TMP_Text>();
-        category3Text = transform.Find("Category3").GetComponentInChildren<TMP_Text>();
-        category4Text = transform.Find("Category4").GetComponentInChildren<TMP_Text>();
-        value1Text = transform.Find("Value1").GetComponentInChildren<TMP_Text>();
-        value2Text = transform.Find("Value2").GetComponentInChildren<TMP_Text>();
-        value3Text = transform.Find("Value3").GetComponentInChildren<TMP_Text>();
-        value4Text = transform.Find("Value4").GetComponentInChildren<TMP_Text>();
+        categoryTexts.Add(1, transform.Find("CategoryButton1").GetComponentInChildren<TMP_Text>());
+        categoryTexts.Add(2, transform.Find("CategoryButton2").GetComponentInChildren<TMP_Text>());
+        categoryTexts.Add(3, transform.Find("CategoryButton3").GetComponentInChildren<TMP_Text>());
+        categoryTexts.Add(4, transform.Find("CategoryButton4").GetComponentInChildren<TMP_Text>());
+
+        valueTexts.Add(1,transform.Find("Value1").GetComponentInChildren<TMP_Text>());
+        valueTexts.Add(2,transform.Find("Value2").GetComponentInChildren<TMP_Text>());
+        valueTexts.Add(3,transform.Find("Value3").GetComponentInChildren<TMP_Text>());
+        valueTexts.Add(4,transform.Find("Value4").GetComponentInChildren<TMP_Text>());
     }
 
     private void Start()
@@ -57,15 +72,15 @@ public class Card : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHand
 
         string[] text = GetCatagoryText();
 
-        category1Text.text = text[0];
-        category2Text.text = text[1];
-        category3Text.text = text[2];
-        category4Text.text = text[3];
+        categoryTexts[1].text = text[0];
+        categoryTexts[2].text = text[1];
+        categoryTexts[3].text = text[2];
+        categoryTexts[4].text = text[3];
 
-        value1Text.text = CategoryValue1.ToString();
-        value2Text.text = CategoryValue2.ToString();
-        value3Text.text = CategoryValue3.ToString();
-        value4Text.text = CategoryValue4.ToString();
+        valueTexts[1].text = CategoryValue1.ToString();
+        valueTexts[2].text = CategoryValue2.ToString();
+        valueTexts[3].text = CategoryValue3.ToString();
+        valueTexts[4].text = CategoryValue4.ToString();
     }
 
     public virtual void SetImage(string imageName)
@@ -79,30 +94,80 @@ public class Card : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHand
         return new string[0];
     }
 
+    public void HighlightCategory(int categoryIndex)
+    {
+        Color color = new Color(255, 0, 0);
+
+        categoryTexts[categoryIndex].color = color;
+        valueTexts[categoryIndex].color = color;
+    }
+
+    public void HideAllValueText()
+    {
+        foreach(KeyValuePair<int,TMP_Text> keyValuePair in valueTexts)
+        {
+            keyValuePair.Value.gameObject.SetActive(false);
+        }
+    }
+
+    public void ShowAllValueText()
+    {
+        foreach (KeyValuePair<int, TMP_Text> keyValuePair in valueTexts)
+        {
+            keyValuePair.Value.gameObject.SetActive(true);
+        }
+    }
+
+    public void ShowValueText(int textIndex)
+    {
+        valueTexts[textIndex].gameObject.SetActive(true);
+    }
+
+    public int GetCategoryValue(int categoryIndex)
+    {
+        int value = 0;
+
+        if (valueTexts.Count >= categoryIndex)
+        {
+            int.TryParse(valueTexts[categoryIndex].text, out value);
+        }
+
+        return value;
+    }
+
     public void OnDrag(PointerEventData eventData)
     {
-        transform.position = eventData.position - dragoffset;
+        if (IsDraggable)
+        {
+            transform.position = eventData.position - dragoffset;
+        }
     }
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        dragoffset.x = eventData.position.x - transform.position.x;
-        dragoffset.y = eventData.position.y - transform.position.y;
+        if (IsDraggable)
+        {
+            dragoffset.x = eventData.position.x - transform.position.x;
+            dragoffset.y = eventData.position.y - transform.position.y;
 
-        DropParent = transform.parent;
-        transform.SetParent(transform.parent.parent);
+            DropParent = transform.parent;
+            transform.SetParent(transform.parent.parent);
 
-        GetComponent<CanvasGroup>().blocksRaycasts = false;
-        gameObject.transform.SetAsLastSibling();
+            GetComponent<CanvasGroup>().blocksRaycasts = false;
+            gameObject.transform.SetAsLastSibling();
+        }
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        if (DropParent != null)
+        if (IsDraggable)
         {
-            transform.SetParent(DropParent);
-        }
+            if (DropParent != null)
+            {
+                transform.SetParent(DropParent);
+            }
 
-        GetComponent<CanvasGroup>().blocksRaycasts = true;
+            GetComponent<CanvasGroup>().blocksRaycasts = true;
+        }
     }
 }
